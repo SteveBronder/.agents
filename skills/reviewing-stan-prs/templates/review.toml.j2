@@ -1,0 +1,112 @@
+# GitHub review data for {{ owner }}/{{ repo }}#{{ number }}, written by `review.py init`.
+#
+# This file is also the schema: each field below has a comment saying what it holds.
+# Fill in every <<...>> placeholder, or delete the entry, following SKILL.md Step 5b;
+# `review.py render` refuses to run while one is left. Then run:
+#   review.py render {{ repo }}#{{ number }}
+# A complete example is reviews/math/3432/review.toml.
+#
+# TOML: top-level keys such as not_checked must come before the first [table].
+# Multi-line text goes in '''...''', which also keeps quotes and backslashes as written.
+
+# What you did not run or could not check, one item each (the C++ build and tests,
+# devices, benchmark reruns). Never empty for a read-only review.
+not_checked = [
+  "<<one item per thing you could not check or run, such as the C++ build and tests>>",
+]
+
+[pr]
+url = "{{ url }}"
+commit = "{{ head_sha }}"       # the reviewed commit; the same as in overall_review.md
+
+[summary]
+opening = "<<one thank-you line>>"
+what_it_does = "<<what the PR does, in your words>>"
+how_checked = "<<how you checked it: ports, mpmath, sympy, models; and what you could not run>>"
+bottom_line = "<<the main requests, without verdict wording>>"
+
+# ---- Claims and evidence: one per speed, accuracy or correctness claim ----
+# Each renders as "### FACT: <claim>", the quote, "#### STATUS: <result>" with the finding,
+# and "#### Evidence:" with evidence_note and evidence_links. Judge the claim from the PR's
+# own evidence only. Your own runs go in [[checks]] below, never here.
+
+[[fact_checks]]
+type = "claim"
+claim = "<<the claim in a few words>>"
+# Rates the author's evidence:
+#   Confirmed         code anyone can download and run reproduces the claim
+#   Partly Confirmed  some code, but not enough to rerun the claim as stated
+#   Not Verified      numbers without code
+result = "<<Confirmed | Partly Confirmed | Not Verified>>"
+# Where the PR itself backs the claim (a test, a script, a table, a comment) and whether
+# that support holds up when you read or trace it.
+finding = '''<<where the PR backs the claim, and whether that holds up>>'''
+evidence_note = "<<what the author provided, and what is missing to rerun it>>"
+# Links to the author's code; required when the result is Confirmed.
+evidence_links = []             # [{label = "bench_lgamma.cpp", url = "https://..."}]
+# Required unless the result is Confirmed: the code that would let someone verify the claim.
+request = '''<<what you ask for>>'''
+[fact_checks.source]            # the claim, quoted word for word; rendered as a > block quote
+kind = "pr_description"         # pr_description | comment | code | commit
+label = "<<where it is, e.g. PR description, Side Effects>>"
+text = '''<<the claim, copied word for word; [...] marks an elision>>'''
+# comment: url = "..." (the link of the comment, review or thread comment, from
+#          context.md) and label = "comment by @login"
+# code:    path = "...", start = 10, end = 12 (lines at pr.commit; ref = "<sha>" for
+#          another commit) and optionally lang = "cpp"; no url or label needed
+# commit:  sha = "..."; no url needed
+
+# ---- Description vs code: one per statement of what the code does or changes ----
+# Each renders as "### FACT: <statement>", the quote, and "#### STATUS: <result>".
+
+[[fact_checks]]
+type = "description"
+claim = "<<the statement in a few words>>"
+result = "<<Matches | Partly matches | Does not match>>"
+finding = '''<<what the code at the reviewed commit does, with permalinks>>'''
+# Required unless it matches: the change to the description you ask for.
+request = '''<<the change you ask for>>'''
+[fact_checks.source]            # the same fields as above
+kind = "pr_description"
+label = "<<where it is, e.g. PR description, Summary>>"
+text = '''<<the statement, copied word for word>>'''
+
+# ---- Independent checks: what you ran yourself, such as ports, mpmath values, benchmarks ----
+# Optional. Rendered in their own section, apart from the PR's evidence. Each one names the
+# files in gist/ it ran.
+#
+# [[checks]]
+# title = "..."                 # what you checked, in a few words
+# finding = '''what you ran and what it showed, with the numbers'''
+# our_code = ["ref_values.py", "ref_values.out"]
+
+# ---- Changes: what the PR changes, in your words ----
+
+[[changes]]
+summary = "<<one change, in your words>>"
+files = ["<<path>>"]
+
+# ---- Optional: issues in the code and tests, and questions for the author ----
+# Points about the description or about evidence belong in fact checks, not here.
+#
+# [[issues]]
+# severity = "must_fix"         # must_fix | suggestion | nit
+# title = "..."
+# inline = true                 # post as an inline comment; only when the lines are in the PR diff
+# problem = '''concrete inputs, the wrong result, and how you verified it'''
+# fix = '''the suggested fix'''
+# [issues.location]             # optional; required when inline
+# path = "..."
+# start = 61                    # new-file line numbers
+# end = 64
+# side = "RIGHT"                # LEFT for deleted lines, with old-file line numbers
+# [issues.quote]                # optional: the same fields as fact_checks.source
+# [issues.raised_by]            # when someone already raised it in the conversation
+# login = "..."
+# url = "..."                   # the link of their comment, from context.md
+#
+# [[questions]]
+# question = "..."
+# would_settle = "..."          # what answer would settle it
+#
+# Do not add a [gist] table: `review.py share --create` writes it when it uploads gist/.

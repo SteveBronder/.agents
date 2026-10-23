@@ -1,0 +1,45 @@
+# Review: {{ repo }}#{{ number }}: {{ title }}
+
+- PR: {{ url }}
+- Author: {{ author }} | Base: `{{ base }}` | Head: `{{ head_owner }}:{{ head_ref }}`
+- Reviewed commit: `{{ head_sha }}`
+- Worktree: <<path of the worktree from Step 2>>
+- Category: <<numerics | code optimization | algorithmic>> / <<bug fix | feature>>
+- Stack: {{ stack }}
+- Reviewed on: {{ today }}
+{% if draft %}
+- Draft: yes
+{% endif %}
+
+## Verdict
+<<2 to 4 sentences: is it ready, what blocks it, and the recommendation (approve / approve after minor changes / needs changes / needs discussion)>>
+
+### Top issues
+1. **[<<severity>>]** <<one line>> (`<<path:line>>`)
+
+## 1. Claims vs tests
+| # | Claim | Test(s) | Red on base? | Verdict |
+|---|---|---|---|---|
+| 1 | <<claim>> | <<test>> | <<red evidence>> | <<verdict>> |
+
+**Red/green:** <<commit structure and the strength of the red evidence>>
+
+**References recomputed:** <<which values, how, the result, and the script in gist/>>
+
+**Test gaps:** <<most important first, each with the test you would ask for>>
+
+## 2. Implementation
+### Findings
+<<For each finding: **[severity] title**, then `path:line`, what is wrong, why it matters (inputs and the resulting wrong behavior where possible), how you verified it, and a suggested fix>>
+
+### Math checks
+<<identity or value checked, the tool, the result, the script in gist/>>
+
+### Static checks
+<<clang-format / cpplint / clang-tidy results on the changed files>>
+
+## 3. Already raised in the conversation
+<<earlier reviewer points, and whether the head commit addresses them>>
+
+## 4. Not verified
+<<what you could not check, e.g. benchmarks not rerun (harness not shared)>>

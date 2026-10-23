@@ -1,0 +1,5 @@
+# {{ repo }}#{{ number }}: deferred, stacked on {{ dep_repo }}#{{ dep_number }}
+- PR: {{ url }}
+- Reviewed commit: none
+- Depends on: {{ dep_repo }}#{{ dep_number }} ({{ dep_state }}), because {{ reason }}
+- Policy: stacked PRs are reviewed after their base PR merges. #{{ dep_number }} is reviewed separately.
