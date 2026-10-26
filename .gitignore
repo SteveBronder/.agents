@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local editor and sync tool files
+skills/.vscode/
+skills/synced/
